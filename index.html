@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>아가씨께 드리는 진심</title>
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&family=Gowun+Batang:wght@400;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --pink-light: #ffe8ef;
+    --pink-mid: #ffc4d6;
+    --pink-deep: #ff8aab;
+    --pink-blush: #fff5f7;
+    --rose: #d4647e;
+    --ink: #3a1f29;
+    --paper: #fffafc;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Gowun Batang', 'Nanum Myeongjo', serif;
+    overflow-x: hidden;
+  }
+
+  body {
+    height: 700vh; /* 7 scenes */
+  }
+
+  /* Fixed stage */
+  .stage {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    background: radial-gradient(ellipse at center, var(--pink-blush) 0%, var(--paper) 70%);
+  }
+
+  /* Grain texture overlay */
+  .stage::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      radial-gradient(circle at 20% 30%, rgba(255, 196, 214, 0.15) 0%, transparent 40%),
+      radial-gradient(circle at 80% 70%, rgba(255, 138, 171, 0.1) 0%, transparent 40%);
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* Floating hearts container */
+  .hearts-bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .heart {
+    position: absolute;
+    color: var(--pink-deep);
+    opacity: 0;
+    animation: floatUp 6s ease-in infinite;
+    user-select: none;
+  }
+
+  @keyframes floatUp {
+    0% { transform: translateY(-15vh) scale(0.3) rotate(-15deg); opacity: 0; }
+    10% { opacity: 0.8; transform: translateY(0vh) scale(0.8) rotate(-10deg); }
+    50% { transform: translateY(50vh) scale(1) rotate(10deg); }
+    90% { opacity: 0.8; }
+    100% { transform: translateY(110vh) scale(0.8) rotate(15deg); opacity: 0; }
+  }
+
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.15); }
+  }
+
+  @keyframes pulseHuge {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+  }
+
+  /* Scene base */
+  .scene {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 4vh 6vw;
+    opacity: 0;
+    transition: opacity 0.6s ease;
+    pointer-events: none;
+    z-index: 10;
+  }
+
+  .scene.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* Scene-specific styles */
+  .scene-1 .title {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: clamp(1rem, 2vw, 1.4rem);
+    color: var(--rose);
+    letter-spacing: 0.3em;
+    margin-bottom: 2rem;
+    text-transform: uppercase;
+  }
+
+  .scene-1 h1 {
+    font-family: 'Nanum Myeongjo', serif;
+    font-weight: 800;
+    font-size: clamp(3rem, 10vw, 8rem);
+    letter-spacing: -0.02em;
+    line-height: 1;
+    text-align: center;
+    color: var(--ink);
+    position: relative;
+  }
+
+  .scene-1 h1 .accent {
+    color: var(--pink-deep);
+    font-style: italic;
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 500;
+  }
+
+  .scene-1 .subtitle {
+    margin-top: 3rem;
+    font-size: clamp(0.9rem, 1.5vw, 1.1rem);
+    color: var(--ink);
+    opacity: 0.6;
+    letter-spacing: 0.4em;
+  }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 6vh;
+    font-size: 0.7rem;
+    letter-spacing: 0.5em;
+    color: var(--rose);
+    opacity: 0.7;
+    animation: bobDown 2s ease-in-out infinite;
+    text-transform: uppercase;
+  }
+
+  @keyframes bobDown {
+    0%, 100% { transform: translateY(0); opacity: 0.7; }
+    50% { transform: translateY(8px); opacity: 0.3; }
+  }
+
+  /* Scene 2 - Long preamble */
+  .scene-2 {
+    text-align: center;
+  }
+
+  .scene-2 .quote-mark {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 8rem;
+    color: var(--pink-deep);
+    line-height: 0.5;
+    margin-bottom: 1rem;
+    opacity: 0.4;
+  }
+
+  .scene-2 p {
+    font-family: 'Nanum Myeongjo', serif;
+    font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+    line-height: 2;
+    max-width: 800px;
+    color: var(--ink);
+  }
+
+  .scene-2 .signature {
+    margin-top: 3rem;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1rem;
+    color: var(--rose);
+    letter-spacing: 0.3em;
+  }
+
+  /* Scene 3 - Confession build-up */
+  .scene-3 {
+    text-align: center;
+  }
+
+  .scene-3 .chapter {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    color: var(--rose);
+    font-size: 1rem;
+    letter-spacing: 0.4em;
+    margin-bottom: 2rem;
+    text-transform: uppercase;
+  }
+
+  .scene-3 .main-text {
+    font-family: 'Nanum Myeongjo', serif;
+    font-weight: 700;
+    font-size: clamp(2rem, 5vw, 4rem);
+    line-height: 1.4;
+    color: var(--ink);
+    max-width: 900px;
+  }
+
+  .scene-3 .main-text em {
+    font-style: italic;
+    color: var(--pink-deep);
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 500;
+  }
+
+  /* Scene 4 - The Big Heart */
+  .scene-4 {
+    position: relative;
+  }
+
+  .big-heart-wrap {
+    position: relative;
+    width: clamp(200px, 40vw, 400px);
+    height: clamp(200px, 40vw, 400px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .big-heart {
+    color: var(--pink-deep);
+    font-size: clamp(8rem, 20vw, 16rem);
+    animation: pulseHuge 1.2s ease-in-out infinite;
+    filter: drop-shadow(0 0 30px rgba(255, 138, 171, 0.5));
+  }
+
+  .big-heart-text {
+    position: absolute;
+    color: white;
+    font-family: 'Nanum Myeongjo', serif;
+    font-weight: 800;
+    font-size: clamp(1rem, 2.5vw, 2rem);
+    text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    z-index: 5;
+  }
+
+  .scene-4 .label {
+    margin-top: 2rem;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: clamp(1.5rem, 3vw, 2.5rem);
+    color: var(--rose);
+  }
+
+  /* Scene 5 - The Confession */
+  .scene-5 {
+    text-align: center;
+  }
+
+  .scene-5 h2 {
+    font-family: 'Nanum Myeongjo', serif;
+    font-weight: 800;
+    font-size: clamp(2.5rem, 7vw, 6rem);
+    line-height: 1.1;
+    color: var(--ink);
+  }
+
+  .scene-5 h2 .pink {
+    color: var(--pink-deep);
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 500;
+  }
+
+  .scene-5 .stamp {
+    display: inline-block;
+    margin-top: 3rem;
+    padding: 0.5rem 2rem;
+    border: 2px solid var(--rose);
+    color: var(--rose);
+    font-family: 'Cormorant Garamond', serif;
+    letter-spacing: 0.5em;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    transform: rotate(-3deg);
+    background: rgba(255, 255, 255, 0.7);
+  }
+
+  /* Scene 6 - Buttons */
+  .scene-6 {
+    text-align: center;
+  }
+
+  .scene-6 .question {
+    font-family: 'Nanum Myeongjo', serif;
+    font-weight: 800;
+    font-size: clamp(2rem, 5vw, 4rem);
+    margin-bottom: 4rem;
+    color: var(--ink);
+  }
+
+  .scene-6 .question em {
+    color: var(--pink-deep);
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+  }
+
+  .button-row {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .btn-yes, .btn-no {
+    padding: 1.2rem 3rem;
+    font-family: 'Nanum Myeongjo', serif;
+    font-weight: 700;
+    font-size: 1.3rem;
+    border: none;
+    cursor: pointer;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    letter-spacing: 0.1em;
+    position: relative;
+  }
+
+  .btn-yes {
+    background: var(--pink-deep);
+    color: white;
+    box-shadow: 0 8px 30px rgba(255, 138, 171, 0.5);
+  }
+
+  .btn-yes:hover {
+    transform: scale(1.1);
+    box-shadow: 0 12px 40px rgba(255, 138, 171, 0.7);
+  }
+
+  .btn-no {
+    background: white;
+    color: var(--ink);
+    border: 2px solid var(--ink);
+    position: relative;
+    transition: all 0.2s ease;
+  }
+
+  /* Scene 7 - Final */
+  .scene-7 {
+    text-align: center;
+  }
+
+  .scene-7 h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: clamp(3rem, 8vw, 7rem);
+    color: var(--pink-deep);
+    line-height: 1.1;
+    margin-bottom: 2rem;
+  }
+
+  .scene-7 .ps {
+    font-family: 'Gowun Batang', serif;
+    font-size: 1.1rem;
+    color: var(--ink);
+    opacity: 0.7;
+    line-height: 1.8;
+    max-width: 500px;
+    margin-top: 2rem;
+  }
+
+  .scene-7 .ps strong {
+    color: var(--rose);
+  }
+
+  /* Progress bar */
+  .progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--pink-mid), var(--pink-deep));
+    z-index: 100;
+    transition: width 0.1s linear;
+  }
+
+  /* Chapter indicator */
+  .chapter-num {
+    position: fixed;
+    top: 3vh;
+    right: 3vw;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    color: var(--rose);
+    font-size: 0.9rem;
+    letter-spacing: 0.3em;
+    z-index: 50;
+    opacity: 0.7;
+  }
+
+  /* Burst of hearts on click */
+  .burst-heart {
+    position: fixed;
+    pointer-events: none;
+    color: var(--pink-deep);
+    z-index: 1000;
+    animation: burst 1s ease-out forwards;
+  }
+
+  @keyframes burst {
+    0% { transform: translate(0, 0) scale(0); opacity: 1; }
+    100% { transform: translate(var(--tx), var(--ty)) scale(1.5); opacity: 0; }
+  }
+
+  /* Falling petals */
+  .petal {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    background: var(--pink-mid);
+    border-radius: 50% 0 50% 0;
+    opacity: 0;
+    pointer-events: none;
+    animation: petalFall 8s linear infinite;
+  }
+
+  @keyframes petalFall {
+    0% { transform: translateY(-10vh) rotate(0deg); opacity: 0.6; }
+    100% { transform: translateY(110vh) rotate(180deg); opacity: 0; }
+  }
+
+  /* Modal */
+  .modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(255, 232, 239, 0.95);
+    z-index: 200;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    backdrop-filter: blur(10px);
+  }
+
+  .modal.show {
+    display: flex;
+  }
+
+  .modal-content {
+    text-align: center;
+    padding: 2rem;
+    animation: modalPop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  @keyframes modalPop {
+    0% { transform: scale(0) rotate(-10deg); opacity: 0; }
+    100% { transform: scale(1) rotate(0); opacity: 1; }
+  }
+
+  .modal h2 {
+    font-family: 'Nanum Myeongjo', serif;
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    color: var(--pink-deep);
+    margin-bottom: 1rem;
+    font-weight: 800;
+  }
+
+  .modal p {
+    font-family: 'Gowun Batang', serif;
+    font-size: 1.3rem;
+    color: var(--ink);
+    margin-bottom: 2rem;
+    line-height: 1.8;
+  }
+
+  .modal button {
+    padding: 1rem 2.5rem;
+    background: var(--pink-deep);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-family: 'Nanum Myeongjo', serif;
+    font-weight: 700;
+    font-size: 1.1rem;
+    cursor: pointer;
+    letter-spacing: 0.1em;
+  }
+
+  /* Decorative ornament */
+  .ornament {
+    color: var(--pink-deep);
+    font-size: 1.5rem;
+    margin: 1rem 0;
+    letter-spacing: 1em;
+    opacity: 0.5;
+  }
+
+  .typewriter {
+    display: inline-block;
+    overflow: hidden;
+    white-space: nowrap;
+    border-right: 2px solid var(--pink-deep);
+    animation: blink 0.8s infinite;
+  }
+
+  @keyframes blink {
+    0%, 50% { border-color: var(--pink-deep); }
+    51%, 100% { border-color: transparent; }
+  }
+
+  /* Date frame */
+  .date-frame {
+    position: absolute;
+    top: 3vh;
+    left: 3vw;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    color: var(--rose);
+    font-size: 0.85rem;
+    letter-spacing: 0.2em;
+    opacity: 0.6;
+    z-index: 50;
+  }
+
+  /* fade scale entrance */
+  .scene > * {
+    transition: transform 0.8s ease, opacity 0.8s ease;
+  }
+
+  .scene:not(.active) > * {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+
+  .scene.active > * {
+    transform: translateY(0);
+    opacity: 1;
+  }
+</style>
+</head>
+<body>
+
+<div class="progress" id="progress"></div>
+<div class="date-frame">ANNO DOMINI · MMXXVI</div>
+<div class="chapter-num" id="chapterNum">— I —</div>
+
+<div class="stage">
+  <div class="hearts-bg" id="heartsBg"></div>
+
+  <!-- Scene 1: Title -->
+  <section class="scene scene-1 active" data-scene="1">
+    <div class="title">A Sincere Letter to</div>
+    <h1>
+      <span class="accent">my dearest</span><br>
+      아가씨
+    </h1>
+    <div class="ornament">❀ ❀ ❀</div>
+    <div class="subtitle">PROLOGUE</div>
+    <div class="scroll-hint">SCROLL TO CONTINUE ↓</div>
+  </section>
+
+  <!-- Scene 2: Long preamble -->
+  <section class="scene scene-2" data-scene="2">
+    <div class="quote-mark">"</div>
+    <p>
+      삼가 아뢰옵나이다.<br>
+      이 글월은 결코 가벼이 쓰여진 것이 아니오며,<br>
+      소생이 수많은 밤을 지새우며 단어 하나하나를 정성껏 골랐음을<br>
+      부디 헤아려 주시옵소서.
+    </p>
+    <div class="signature">— 진심을 다하여</div>
+  </section>
+
+  <!-- Scene 3: Build-up -->
+  <section class="scene scene-3" data-scene="3">
+    <div class="chapter">Chapter II · The Truth</div>
+    <div class="main-text">
+      사실은,<br>
+      오래전부터<br>
+      <em>드리고 싶었던 말씀이</em><br>
+      있었사옵니다.
+    </div>
+  </section>
+
+  <!-- Scene 4: Big Heart -->
+  <section class="scene scene-4" data-scene="4">
+    <div class="big-heart-wrap">
+      <div class="big-heart">♥</div>
+      <div class="big-heart-text">아가씨</div>
+    </div>
+    <div class="label">— for you —</div>
+  </section>
+
+  <!-- Scene 5: The Confession -->
+  <section class="scene scene-5" data-scene="5">
+    <div class="ornament">✦ ✦ ✦</div>
+    <h2>
+      <span class="pink">아가씨,</span><br>
+      당신을<br>
+      사모하옵니다.
+    </h2>
+    <div class="stamp">Sealed with sincerity</div>
+  </section>
+
+  <!-- Scene 6: Question with buttons -->
+  <section class="scene scene-6" data-scene="6">
+    <div class="question">
+      <em>저와 함께</em><br>
+      해주시겠습니까?
+    </div>
+    <div class="button-row">
+      <button class="btn-yes" onclick="sayYes()">예 ♡</button>
+      <button class="btn-no" id="btnNo">아니요</button>
+    </div>
+  </section>
+
+  <!-- Scene 7: Final / fallback -->
+  <section class="scene scene-7" data-scene="7">
+    <div class="ornament">❀</div>
+    <h1>fin.</h1>
+    <p class="ps">
+      <strong>P.S.</strong><br>
+      이 글에 담긴 모든 마음은<br>
+      한 자도 거짓 없는 진심이오니,<br><br>
+      부디 가벼이 여기지 마시고<br>
+      소생의 마음을 헤아려 주시옵소서.
+    </p>
+    <div class="ornament">♡ ♡ ♡</div>
+  </section>
+</div>
+
+<!-- Yes Modal -->
+<div class="modal" id="yesModal">
+  <div class="modal-content">
+    <div class="ornament">♡ ♡ ♡</div>
+    <h2>아가씨...🥹♥️</h2>
+    <p>
+      소생의 마음을 받아주시니<br>
+      이 은혜를 어찌 다 갚으오리까.<br><br>
+      평생을 다하여<br>
+      아가씨만을 바라보겠나이다.
+    </p>
+    <button onclick="closeModal()">감읍하옵니다</button>
+  </div>
+</div>
+
+<script>
+  // Generate floating hearts
+  const heartsBg = document.getElementById('heartsBg');
+  const heartChars = ['♥', '♡', '❤', '💗', '💖'];
+
+  function createHeart() {
+    const heart = document.createElement('div');
+    heart.className = 'heart';
+    heart.textContent = heartChars[Math.floor(Math.random() * heartChars.length)];
+    heart.style.left = Math.random() * 100 + '%';
+    heart.style.fontSize = (Math.random() * 30 + 15) + 'px';
+    heart.style.animationDuration = (Math.random() * 4 + 4) + 's';
+    heart.style.animationDelay = Math.random() * 2 + 's';
+    heart.style.color = Math.random() > 0.5 ? '#ff8aab' : '#ffc4d6';
+    heartsBg.appendChild(heart);
+
+    setTimeout(() => heart.remove(), 10000);
+  }
+
+  // Initial burst
+  for (let i = 0; i < 8; i++) {
+    setTimeout(createHeart, i * 400);
+  }
+  setInterval(createHeart, 1200);
+
+  // Petals
+  function createPetal() {
+    const petal = document.createElement('div');
+    petal.className = 'petal';
+    petal.style.left = Math.random() * 100 + '%';
+    petal.style.animationDuration = (Math.random() * 4 + 6) + 's';
+    petal.style.animationDelay = Math.random() * 3 + 's';
+    petal.style.background = Math.random() > 0.5 ? '#ffc4d6' : '#ff8aab';
+    heartsBg.appendChild(petal);
+    setTimeout(() => petal.remove(), 12000);
+  }
+  setInterval(createPetal, 1800);
+
+  // Scroll-driven scene switcher
+  const scenes = document.querySelectorAll('.scene');
+  const progress = document.getElementById('progress');
+  const chapterNum = document.getElementById('chapterNum');
+  const romanNumerals = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII'];
+
+  function onScroll() {
+    const scrollTop = window.scrollY;
+    const maxScroll = document.body.scrollHeight - window.innerHeight;
+    const ratio = scrollTop / maxScroll;
+
+    progress.style.width = (ratio * 100) + '%';
+
+    // 7 scenes, so each takes 1/7 of total scroll
+    const sceneIndex = Math.min(Math.floor(ratio * scenes.length), scenes.length - 1);
+
+    scenes.forEach((s, i) => {
+      s.classList.toggle('active', i === sceneIndex);
+    });
+
+    chapterNum.textContent = '— ' + romanNumerals[sceneIndex] + ' —';
+  }
+
+  window.addEventListener('scroll', onScroll);
+
+  // No button runs away
+  const btnNo = document.getElementById('btnNo');
+  btnNo.addEventListener('mouseenter', () => {
+    const maxX = window.innerWidth - btnNo.offsetWidth - 40;
+    const maxY = window.innerHeight - btnNo.offsetHeight - 40;
+    const newX = Math.random() * maxX;
+    const newY = Math.random() * maxY;
+    btnNo.style.position = 'fixed';
+    btnNo.style.left = newX + 'px';
+    btnNo.style.top = newY + 'px';
+    btnNo.style.transform = 'rotate(' + (Math.random() * 30 - 15) + 'deg)';
+  });
+
+  btnNo.addEventListener('click', (e) => {
+    e.preventDefault();
+    // Even if you somehow click it, it just runs away more
+    const maxX = window.innerWidth - btnNo.offsetWidth - 40;
+    const maxY = window.innerHeight - btnNo.offsetHeight - 40;
+    btnNo.style.left = Math.random() * maxX + 'px';
+    btnNo.style.top = Math.random() * maxY + 'px';
+  });
+
+  // Yes button
+  function sayYes() {
+    // Burst of hearts
+    for (let i = 0; i < 30; i++) {
+      const heart = document.createElement('div');
+      heart.className = 'burst-heart';
+      heart.textContent = heartChars[Math.floor(Math.random() * heartChars.length)];
+      heart.style.left = window.innerWidth / 2 + 'px';
+      heart.style.top = window.innerHeight / 2 + 'px';
+      heart.style.fontSize = (Math.random() * 40 + 20) + 'px';
+      const angle = (i / 30) * Math.PI * 2;
+      const distance = Math.random() * 400 + 200;
+      heart.style.setProperty('--tx', Math.cos(angle) * distance + 'px');
+      heart.style.setProperty('--ty', Math.sin(angle) * distance + 'px');
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 1000);
+    }
+
+    setTimeout(() => {
+      document.getElementById('yesModal').classList.add('show');
+    }, 500);
+  }
+
+  function closeModal() {
+    document.getElementById('yesModal').classList.remove('show');
+  }
+
+  // Click anywhere creates hearts
+  document.addEventListener('click', (e) => {
+    if (e.target.tagName === 'BUTTON') return;
+    for (let i = 0; i < 6; i++) {
+      const heart = document.createElement('div');
+      heart.className = 'burst-heart';
+      heart.textContent = '♥';
+      heart.style.left = e.clientX + 'px';
+      heart.style.top = e.clientY + 'px';
+      heart.style.fontSize = (Math.random() * 20 + 15) + 'px';
+      const angle = (i / 6) * Math.PI * 2;
+      const distance = Math.random() * 100 + 50;
+      heart.style.setProperty('--tx', Math.cos(angle) * distance + 'px');
+      heart.style.setProperty('--ty', Math.sin(angle) * distance + 'px');
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 1000);
+    }
+  });
+
+  onScroll();
+</script>
+</body>
+</html>
